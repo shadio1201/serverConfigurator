@@ -4,7 +4,10 @@ import { useState } from "react";
 
 function App() {
 
-  const [Rows, setRows] = useState([{ id: 1, Amount: 1, bandwitdh: 0.19, storage: 24.36 }]);
+  const [Rows, setRows] = useState([{ id: 1 }]);
+
+  const [Calc, setCalc] = useState([{ id: 0, Amount: 1, bandwitdh: 0.19, storage: 24.36 }])
+  const [Amounts, setAmounts] = useState()
 
   const [Total, setTotal] = useState({ total: 0, totalBandwitdh: 100, totalStorage: 1525.2 })
 
@@ -34,7 +37,7 @@ function App() {
   function CalculateStorageAndMbps(key, Amount, bandwitdh, storage) {
     /* console.log(id, Amount, bandwitdh, storage) */
 
-    let changeItem = Rows.find((item) => {
+    let changeItem = Calc.find((item) => {
       return item.id = key
     })
 
@@ -42,19 +45,17 @@ function App() {
     changeItem.bandwitdh = bandwitdh
     changeItem.storage = storage
 
-    /* let array = Calc.map((obj) => {
-      if(obj.id === key) {
-        
-        return changeItem
+    let array = Calc.map((obj) => {
+      if(obj.id === changeItem.id) {
+        return { ...changeItem }
       } else {
-        
         return obj
       }
-    }) */
+    })
 
-    
+    setCalc(array)
 
-    console.log(changeItem)
+    console.log(Calc)
   }
 
   return (
@@ -68,7 +69,7 @@ function App() {
           {
             Rows.map((row, i) => {
               return (
-                <Form key={row.id} uniqueKey={row.id} removeRow={removeRow} CalcStorageAndMbps={CalculateStorageAndMbps} CalcData={Rows[i]} />
+                <Form key={row.id} uniqueKey={row.id} removeRow={removeRow} CalcStorageAndMbps={CalculateStorageAndMbps} CalcData={Calc[i]} />
               )
             })
           }
@@ -76,7 +77,9 @@ function App() {
           className="bg-slate-700 py-1 px-4 text-white hover:shadow-md hover:bg-slate-600"
           onClick={() => {
             let id = Math.floor(Math.random() * 1000 );
-            setRows((currentRows) => [...currentRows, { id: id, Amount: 1, bandwitdh: 0.19, storage: 24.36 }])
+            setRows((currentRows) => [...currentRows, { id: id }])
+            setCalc((currentCalc)=> [...currentCalc, { id: id, Amount: 1, bandwitdh: 0.19, storage: 24.36 }])
+          
           }}>Add new row</button>
 
         <div className="border-t-2 py-4 flex justify-between items-center w-full px-8 text-2xl">
