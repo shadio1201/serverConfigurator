@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline"
 
-function Form({ removeRow, uniqueKey, getData }) {
+function Form({ removeRow, uniqueKey, CalcData, CalcStorageAndMbps }) {
 
     const [Amount, setAmount] = useState(1);
     const [Res, setRes] = useState('');
@@ -10,6 +10,8 @@ function Form({ removeRow, uniqueKey, getData }) {
     const [Fps, setFps] = useState(10);
     const [Motion, setMotion] = useState(40);
     const [Days, setDays] = useState(30);
+    const [Bandwitdth, setBandwitdth] = useState(0);
+    const [Storage, setStorage] = useState(0);
 
     const resOptions = [
         'D1',
@@ -27,30 +29,28 @@ function Form({ removeRow, uniqueKey, getData }) {
         'H.265',
       ];
 
-      useEffect(() => {
-        getData({
-            uniqueKey,
-            Amount,
-            Res,
-            Comp,
-            Drate,
-            Fps,
-            Motion,
-            Days
-        })
-      }, [Amount, Res, Comp, Drate, Fps, Motion, Days])
+
+      function CalculateNumbers() {
+        setBandwitdth(Math.floor(Math.random() * 5000))
+        setStorage((Math.random() * 3000).toFixed(2))
+      }
+
 
     return (
     <div className="flex" id={uniqueKey}>
-        <form className="flex gap-4">
+        <form className="flex gap-4" onChange={() => { 
+            CalculateNumbers()
+            CalcStorageAndMbps(uniqueKey, Number(Amount), Bandwitdth, Number(Storage))
+            }}>
 
             <span className="flex flex-col justify-center items-center">
                 <label htmlFor="quantity">Quantity</label>
                 <input type="number" value={Amount} name="quantity" className="text-center w-fit" 
                 onChange={(e) => {
                     if(e.target.value < 1) return alert('Invalid Amount')
-                    setAmount(e.target.value) }
-                }
+                    setAmount(() => e.target.value)
+            
+                }}
                 />
             </span>
 
@@ -129,12 +129,12 @@ function Form({ removeRow, uniqueKey, getData }) {
 
         <div className="results flex gap-4 border-l-2 ml-4 pl-4">
             <span className="flex flex-col justify-center items-center w-fit">
-                <p className="font-bold">Bandwidth (mbps)</p>
-                <p>12.15</p>
+                <p className="font-bold text-center">Bandwidth (mbps)</p>
+                <p>{ Bandwitdth }</p>
             </span>
             <span className="flex flex-col justify-center items-center w-fit">
-                <p className="font-bold">Storage(GB)</p>
-                <p>1574.9</p>
+                <p className="font-bold text-center">Storage(GB)</p>
+                <p>{ Storage }</p>
             </span>
         </div>
 
