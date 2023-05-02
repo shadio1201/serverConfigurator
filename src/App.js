@@ -4,7 +4,7 @@ import { useState } from "react";
 
 function App() {
 
-  const [rows, setRows] = useState([{ id: 1 }])
+  const [rows, setRows] = useState([])
 
   const [data, setData] = useState([])
 
@@ -17,9 +17,19 @@ function App() {
   }
 
   function getData(input) {
-    setData(() => {
-      setData([...data, input])
-    })
+    setData(currentData => {
+      const existingIndex = currentData.findIndex(item => item.id === input.id);
+      if (existingIndex !== -1) {
+        // Update existing object
+        const newData = [...currentData];
+        newData[existingIndex] = { ...newData[existingIndex], ...input };
+        return newData;
+      } else {
+        // Add new object
+        return [...currentData, input];
+      }
+    });
+    console.log(data)
   }
 
   return (
@@ -48,7 +58,7 @@ function App() {
           </div>
         </div>
         </div>
-        <div className="bg-slate-50/75 py-2 px-4 rounded-md flex flex-col justify-center items-center gap-8 mt-4 w-full">
+        <div className="bg-slate-50/75 py-2 px-4 rounded-md flex flex-col justify-center items-center gap-8 mt-4 w-fu">
             <div className="flex justify-between items-center px-8 w-full">
               <h1>test</h1>
             </div>
