@@ -40,7 +40,6 @@ function Form({ removeRow, uniqueKey, CalcData, CalcStorageAndMbps }) {
     <div className="flex" id={uniqueKey}>
         <form className="flex gap-4" onChange={() => { 
             CalculateNumbers()
-            CalcStorageAndMbps(uniqueKey, Number(Amount), Bandwitdth, Number(Storage))
             }}>
 
             <span className="flex flex-col justify-center items-center">

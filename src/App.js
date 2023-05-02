@@ -20,8 +20,8 @@ function App() {
   }
 
   function getData(input) {
-    setData(() => {
-      setData([...data, input])
+    setCalc(() => {
+      setCalc([...Calc, input])
     })
   }
 
@@ -36,7 +36,7 @@ function App() {
           {
             Rows.map((row, i) => {
               return (
-                <Form key={row.id} uniqueKey={row.id} removeRow={removeRow} CalcStorageAndMbps={CalculateStorageAndMbps} CalcData={Calc[i]} />
+                <Form key={row.id} uniqueKey={row.id} removeRow={removeRow} CalcStorageAndMbps={getData} CalcData={Calc[i]} />
               )
             })
           }
