@@ -4,9 +4,12 @@ import { useState } from "react";
 
 function App() {
 
-  const [rows, setRows] = useState([])
+  const [Rows, setRows] = useState([{ id: 1 }]);
 
-  const [data, setData] = useState([])
+  const [Calc, setCalc] = useState([{ id: 0, Amount: 1, bandwitdh: 0.19, storage: 24.36 }])
+  const [Amounts, setAmounts] = useState()
+
+  const [Total, setTotal] = useState({ total: 0, totalBandwitdh: 100, totalStorage: 1525.2 })
 
   function removeRow(id) {
     setRows(currentRows => {
@@ -17,50 +20,53 @@ function App() {
   }
 
   function getData(input) {
-    setData(currentData => {
-      const existingIndex = currentData.findIndex(item => item.id === input.id);
-      if (existingIndex !== -1) {
-        // Update existing object
-        const newData = [...currentData];
-        newData[existingIndex] = { ...newData[existingIndex], ...input };
-        return newData;
-      } else {
-        // Add new object
-        return [...currentData, input];
-      }
-    });
-    console.log(data)
+    setData(() => {
+      setData([...data, input])
+    })
   }
 
   return (
     <div className="App">
       <Header />
       <section className="flex flex-col justify-start items-center py-8 h-full">
-        <div className="bg-slate-50/75 py-2 px-4 rounded-md flex flex-col justify-center items-center gap-8">
+        <div  className="bg-slate-50/75 py-2 px-4 rounded-md flex flex-col justify-center items-center gap-8 w-[85%]">
           {
-            rows.map((row) => {
+            !Rows.length && <p className="text-2xl py-2">Please add a row</p>
+          }
+          {
+            Rows.map((row, i) => {
               return (
-                <Form key={row.id} uniqueKey={row.id} removeRow={removeRow} getData={getData} />
+                <Form key={row.id} uniqueKey={row.id} removeRow={removeRow} CalcStorageAndMbps={CalculateStorageAndMbps} CalcData={Calc[i]} />
               )
             })
           }
           <button 
           className="bg-slate-700 py-1 px-4 text-white hover:shadow-md hover:bg-slate-600"
           onClick={() => {
-            setRows((currentRows) => [...currentRows, { id: Math.floor(Math.random() * 1000 )}])
+            let id = Math.floor(Math.random() * 1000 );
+            setRows((currentRows) => [...currentRows, { id: id }])
+            setCalc((currentCalc)=> [...currentCalc, { id: id, Amount: 1, bandwitdh: 0.19, storage: 24.36 }])
+          
           }}>Add new row</button>
 
         <div className="border-t-2 py-4 flex justify-between items-center w-full px-8 text-2xl">
-          <h3>Amount: 10</h3>
+          <h3>Amount: { Total.total }</h3>
           <div className="flex gap-4">
-            <h3>70.2 Mbps</h3>
-            <h3>9.3 TB</h3>
+            <h3>{ Total.totalBandwitdh } Mbps</h3>
+            <h3>{ Total.totalStorage } TB</h3>
           </div>
         </div>
         </div>
-        <div className="bg-slate-50/75 py-2 px-4 rounded-md flex flex-col justify-center items-center gap-8 mt-4 w-fu">
+        <div className="bg-slate-50/75 py-2 px-4 rounded-md flex flex-col justify-center items-center gap-8 mt-4 w-full">
             <div className="flex justify-between items-center px-8 w-full">
-              <h1>test</h1>
+              
+              <span>
+              <h2>Hent din PDF her</h2>
+              <button
+              className="py-1 px-4 bg-orange-400 text-white"
+              onClick={() => console.log('PDF downloading...')}
+              >Download PDF</button>
+              </span>
             </div>
         </div>
       </section>
