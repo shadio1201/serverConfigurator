@@ -2,6 +2,8 @@ import Header from "../src/components/mainHeader"
 import Form from "../src/components/forms/form"
 import { useState } from "react";
 
+
+
 function App() {
 
   const [Rows, setRows] = useState([{ id: 1 }]);
@@ -19,10 +21,43 @@ function App() {
     })
   }
 
-  function getData(input) {
-    setData(() => {
-      setData([...data, input])
+  // Calculate amount, mbps and storage
+/*   const CalculateStorageAndMbps = useCallback((id, Amount, bandwitdh, storage) => {
+    setCalc((curr)=> {
+      let selected = curr.filter((ele) => {
+        return ele.id === id;
+      })
+      let newItem = {...selected}
+      newItem.storage = storage
+      newItem.bandwitdh = bandwitdh
+
+      return [...curr, newItem]
     })
+    console.log(Calc)
+  }, []) */
+
+  function CalculateStorageAndMbps(key, Amount, bandwitdh, storage) {
+    /* console.log(id, Amount, bandwitdh, storage) */
+
+    let changeItem = Calc.find((item) => {
+      return item.id = key
+    })
+
+    changeItem.Amount = Amount;
+    changeItem.bandwitdh = bandwitdh
+    changeItem.storage = storage
+
+    let array = Calc.map((obj) => {
+      if(obj.id === changeItem.id) {
+        return { ...changeItem }
+      } else {
+        return obj
+      }
+    })
+
+    setCalc(array)
+
+    console.log(Calc)
   }
 
   return (
@@ -57,7 +92,7 @@ function App() {
           </div>
         </div>
         </div>
-        <div className="bg-slate-50/75 py-2 px-4 rounded-md flex flex-col justify-center items-center gap-8 mt-4 w-full">
+        <div className="bg-slate-50/75 py-2 px-4 rounded-md flex flex-col justify-center items-center gap-8 mt-8 w-[85%]">
             <div className="flex justify-between items-center px-8 w-full">
               
               <span>
