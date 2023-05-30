@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline"
+import { useCalcUpdate } from '../../CalcContext'
 
-function Form({ removeRow, uniqueKey, CalcData, CalcStorageAndMbps }) {
+function Form({ removeRow, uniqueKey }) {
+
+    const updateArray = useCalcUpdate()
 
     const [Amount, setAmount] = useState(1);
     const [Res, setRes] = useState('');
@@ -10,8 +13,8 @@ function Form({ removeRow, uniqueKey, CalcData, CalcStorageAndMbps }) {
     const [Fps, setFps] = useState(10);
     const [Motion, setMotion] = useState(40);
     const [Days, setDays] = useState(30);
-    const [Bandwitdth, setBandwitdth] = useState(0);
-    const [Storage, setStorage] = useState(0);
+    const [Bandwitdth, setBandwitdth] = useState(24.36);
+    const [Storage, setStorage] = useState(0.19);
 
     const resOptions = [
         'D1',
@@ -31,9 +34,12 @@ function Form({ removeRow, uniqueKey, CalcData, CalcStorageAndMbps }) {
 
 
       function CalculateNumbers() {
-        setBandwitdth(Math.floor(Math.random() * 5000))
-        setStorage((Math.random() * 3000).toFixed(2))
+        setBandwitdth(Math.floor(Math.random() * 5000).toFixed(2));
+        setStorage((Math.random() * 3000).toFixed(2));
+        updateArray(uniqueKey, Number(Amount), Number(Bandwitdth), Number(Storage))
       }
+
+      
 
 
     return (
