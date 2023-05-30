@@ -10,7 +10,6 @@ const RemoveRows = React.createContext();
 
 //totals
 const TotalCount = React.createContext();
-const TotalCalc = React.createContext();
 
 export function useCalcUpdate() {
   return useContext(CalcUpdateContext)
@@ -24,10 +23,6 @@ export function useTotal() {
   return useContext(TotalCount)
 }
 
-/* export function useTotalCalc() {
-  return useContext(TotalCalc)
-} */
-
 export function useCounterRows() {
   return useContext(CounterRows)
 }
@@ -37,8 +32,52 @@ export function useRemoveRows() {
 }
 
 export function CalcProvider({ children }) {
+
+  const [rows, setRows] = useState([]);
+  const [total, setTotal] = useState([0, 0, 0]);
+
+useEffect(() => {
+  if (rows.length > 0) {
+    const [totalAmount, totalStorage, totalBandwidth] = rows.reduce(
+      (acc, [amount, storage, bandwidth]) => {
+        return [          acc[0] + amount,
+          acc[1] + storage,
+          acc[2] + bandwidth,
+        ];
+      },
+      [0, 0, 0]
+    );
+    setTotal([totalAmount, totalStorage, totalBandwidth]);
+  } else {
+    setTotal([0, 0, 0]);
+  }
+}, [rows]);
+
+function updateRows() {
+  setRows((currentRows) => [...currentRows, [1, 24.36, 0.19]]);
+}
+
+function removeRow(id) {
+  setRows((currentRows) => {
+    return currentRows.filter((row, i) => {
+      return i !== id;
+    });
+  });
+}
+
+function updateValues(index, amount, bandwitdh, storage) {
+  const changedRow = [amount, bandwitdh, storage];
+  let array = rows.map((row, i) => {
+    if (index === i) {
+      return changedRow;
+    } else {
+      return row;
+    }
+  });
+  setRows(array);
+}
     
-    const [rows, setRows] = useState([]);
+/*     const [rows, setRows] = useState([]);
     let total = [0, 0, 0]
 
     if(rows[0]) {
@@ -46,17 +85,6 @@ export function CalcProvider({ children }) {
         return [prev[0] + next[0], prev[1] + next[1], prev[2] + next[2]];
       });
     }
-
-
-
-/*     const calculateTotals = () => {
-      for(let i = 0; i < rows.length; i++) {
-        let without = [rows[i][1], rows[i][2], rows[i][3],]
-        array.push(without);
-      }
-  
-      let totals = [totalAmount[0], Number(totalAmount[1].toFixed(2)), Number(totalAmount[2].toFixed(2))];
-    } */
 
     function updateRows() {
       let id = Math.floor(Math.random() * 1000 );
@@ -85,7 +113,7 @@ export function CalcProvider({ children }) {
             }
             });
           setRows(array); 
-    }
+    } */
 
 /*     useEffect(() => {
       if(rows[0]) {
